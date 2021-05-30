@@ -20,6 +20,7 @@ class FaceDetector:
             cv2.imshow('camera', frame)
             return x, y, (w + h) // 2, True
         else:
+            cv2.imshow('camera', frame)
             return None, None, None, False
 
     def release(self):
