@@ -27,6 +27,10 @@ if __name__ == '__main__':
                         wheels_manager.left()
                     elif opt == 'right':
                         wheels_manager.right()
+                    elif opt == 'disconnect':
+                        wheels_manager.stop()
+                        connection.close()
+                        exit(0)
             except socket.timeout:
                 print('time out')
             except ConnectionResetError:
