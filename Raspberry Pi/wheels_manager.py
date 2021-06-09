@@ -12,7 +12,8 @@ class WheelsManager:
                  motor_ru_pin1=13, motor_ru_pin2=19, motor_ru_pwm_pin=26,
                  motor_ld_pin1=23, motor_ld_pin2=24, motor_ld_pwm_pin=25,
                  motor_rd_pin1=20, motor_rd_pin2=16, motor_rd_pwm_pin=12,
-                 servo_channel=0, servo_range=12, servo_sensitivity=2):
+                 servo_channel=0, servo_range=10, servo_sensitivity=2,
+                 debug=False):
         GPIO.setmode(GPIO.BCM)
         self.motor_speed = 0
         self.motor_sensitivity = motor_sensitivity
@@ -41,6 +42,7 @@ class WheelsManager:
         self.servo_max = self.servo_pos + servo_range
         self.servo_min = self.servo_pos - servo_range
         self.init_servo()
+        self.debug = debug
 
     def init_setup(self):
         GPIO.setup(self.motor_lu_pin1, GPIO.OUT, initial=GPIO.LOW)
@@ -114,12 +116,19 @@ class WheelsManager:
             self.servo.set_pwm(self.servo_channel, 0, angle_to_servo_data(self.servo_pos))
 
     def change_speed(self):
-        print(self.motor_speed)
+        if self.debug:
+            print(self.motor_speed)
         speed = abs(self.motor_speed)
-        self.motor_lu_pwm.ChangeDutyCycle(speed)
-        self.motor_ru_pwm.ChangeDutyCycle(speed)
-        self.motor_ld_pwm.ChangeDutyCycle(speed)
-        self.motor_rd_pwm.ChangeDutyCycle(speed)
+        if speed <= 30:
+            self.motor_lu_pwm.ChangeDutyCycle(0)
+            self.motor_ru_pwm.ChangeDutyCycle(0)
+            self.motor_ld_pwm.ChangeDutyCycle(0)
+            self.motor_rd_pwm.ChangeDutyCycle(0)
+        else:
+            self.motor_lu_pwm.ChangeDutyCycle(speed)
+            self.motor_ru_pwm.ChangeDutyCycle(speed)
+            self.motor_ld_pwm.ChangeDutyCycle(speed)
+            self.motor_rd_pwm.ChangeDutyCycle(speed)
         if self.motor_speed > 0:
             self.forward()
         else:

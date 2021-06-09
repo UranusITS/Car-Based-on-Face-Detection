@@ -1,6 +1,8 @@
 import socket
 import time
+import cv2
 from wheels_manager import WheelsManager
+from car_camera import CarCamera
 
 if __name__ == '__main__':
     # HOST = '192.168.1.104'
@@ -10,6 +12,10 @@ if __name__ == '__main__':
     sock.bind((HOST, PORT))
     sock.listen(1)
     wheels_manager = WheelsManager()
+    camera1 = CarCamera(1, 0, daemon=True)
+    camera2 = CarCamera(2, 2, daemon=True)
+    camera1.start()
+    camera2.start()
     while True:
         connection, address = sock.accept()
         while True:
@@ -18,7 +24,7 @@ if __name__ == '__main__':
                 buf = connection.recv(1024)
                 if buf:
                     opt = buf.decode('ASCII')
-                    print(opt)
+                    # print(opt)
                     if opt == 'accel':
                         wheels_manager.accelerate()
                     elif opt == 'decel':
@@ -36,4 +42,5 @@ if __name__ == '__main__':
             except ConnectionResetError:
                 print('disconnected')
                 connection.close()
+                break
         connection.close()

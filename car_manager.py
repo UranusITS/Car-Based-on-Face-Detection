@@ -4,7 +4,7 @@ from face_detector import FaceDetector
 
 
 class CarManager:
-    def __init__(self, min_dx=20, min_da=2000, init_num=10, debug=False,
+    def __init__(self, min_dx=20, min_da=20, init_num=10, debug=False,
                  socket_host='172.18.22.12', socket_port=1919):
         # Init face detection on camera
         self._face_detector = FaceDetector(debug=debug)
@@ -47,7 +47,7 @@ class CarManager:
         while True:
             x, y, a, fd = self._face_detector.get_face_pos()
             if fd:
-                print(x, y, a)
+                # print(x, y, a)
                 if a - self._a > self._min_da:
                     self.accelerate()
                 elif self._a - a > self._min_da:
