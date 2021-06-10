@@ -38,7 +38,7 @@ class WheelsManager:
         self.init_pwm()
         self.servo = Adafruit_PCA9685.PCA9685()
         self.servo_channel = servo_channel
-        self.servo_pos = 90
+        self.servo_pos = 92
         self.servo_max = self.servo_pos + servo_range
         self.servo_min = self.servo_pos - servo_range
         self.init_servo()

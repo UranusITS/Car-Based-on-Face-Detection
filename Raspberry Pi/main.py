@@ -12,10 +12,8 @@ if __name__ == '__main__':
     sock.bind((HOST, PORT))
     sock.listen(1)
     wheels_manager = WheelsManager()
-    camera1 = CarCamera(1, 0, daemon=True)
-    camera2 = CarCamera(2, 2, daemon=True)
-    camera1.start()
-    camera2.start()
+    camera = CarCamera(1, (0, 2), daemon=True)
+    camera.start()
     while True:
         connection, address = sock.accept()
         while True:
